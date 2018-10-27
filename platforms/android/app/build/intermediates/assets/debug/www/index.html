@@ -1,0 +1,497 @@
+<html ng-app="ionicApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <link href="css/ionic.css" rel="stylesheet"> 
+    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" media="all" rel="stylesheet" type="text/css" /> 
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://code.ionicframework.com/1.1.0/js/ionic.bundle.js"></script> 
+ 	<script type="text/javascript">
+ 		function init(){
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
+
+        function onDeviceReady() {
+          // StatusBar.backgroundColorByHexString("#f3431c");
+      }
+
+ 		function go_to(argument) {
+ 			window.location.href ="#/"+argument;
+ 		}
+ 		function check_gps(argument) {
+ 			document.getElementById('city').innerHTML = 'Roma';
+ 		}
+ 		function send_data(argument) {
+ 			cordova.plugin.pDialog.init({
+			    theme : 'HOLO_DARK',
+			    progressStyle : 'SPINNER',
+			    cancelable : true,
+			    title : 'Attendere Prego...',
+			    message : 'Invio dati in corso...'
+			});
+			setTimeout(function(){
+
+				var temp 	  = document.getElementById('temp').value;
+				var freq_card = document.getElementById('freq_card').value;
+				var pres_sang = document.getElementById('pres_sang').value;
+
+				//random
+				var n_1 = Math.floor(Math.random() * 100) + 60;
+				var n_2 = Math.floor(Math.random() * 100) + 60;
+				var n_3 = n_1+'/'+n_2;
+				$.ajax
+				({
+				    type:'POST',
+				    url:'http://www.takeselfie.it/vega/inserimento.php',
+				    data:{'PK_Parametro':0, 'Temp_Corp':Math.floor(Math.random() * 37) + 35, 'Battito_Card': n_3, 'Pressione':Math.floor(Math.random() * 100) + 85, 'FK_Username':'Danyzzz', 'Data':'27/11/2016'},
+				    cache:true,
+				    success:function(html)
+				        {
+				     		cordova.plugin.pDialog.dismiss();
+				        }
+				});
+			}, 2000);
+ 		}
+ 	</script>
+  </head>
+
+  <body onload="init()">
+    <ion-side-menus>
+        
+        <ion-side-menu-content ng-controller="NavCtrl" class="ng-cloak">
+          <ion-nav-bar class="bar-royal">
+          </ion-nav-bar>
+          <ion-nav-view animation="slide-left-right"></ion-nav-view>
+        </ion-side-menu-content> 
+        
+        <ion-side-menu side="left" class="ng-cloak">
+          <ion-header-bar class="bar bar-header bar-royal" style="background-color:#330066;border-color:#330066">
+            <h1 class="title" style="text-align: left">Offline Resurces</h1>
+          </ion-header-bar>
+          <ion-content has-header="true">
+            <div class="list">
+            	<img src="img/img_menu.jpeg" style="width:100%;border-bottom: 5px solid #f15735">
+              <div menu-close class="item item-avatar" onclick="go_to('offline_rec')">
+			    <img src="img/terremoto.png">
+			    <h2 style="top: 8px;position: relative;">Earthquakes</h2>
+			  </div>
+			  <div class="item item-avatar">
+			    <img src="img/vulcano.png">
+			    <h2 style="top: 8px;position: relative;">Eruptions</h2>
+			  </div>
+			  <div class="item item-avatar">
+			    <img src="img/inondazione.png">
+			    <h2 style="top: 8px;position: relative;">Floods</h2>
+			  </div>
+			  <div class="item item-avatar">
+			    <img src="img/uragano.png">
+			    <h2 style="top: 8px;position: relative;">Hurricanes</h2>
+			  </div>
+			  <div class="item item-avatar">
+			    <img src="img/tsunami.png">
+			    <h2 style="top: 8px;position: relative;">Tsunamis</h2>
+			  </div>
+			  <div class="item item-avatar">
+			    <img src="img/incendio.png">
+			    <h2 style="top: 8px;position: relative;">Wildfires</h2>
+			  </div>
+            </ul>
+          </ion-content>
+        </ion-side-menu> 
+      </ion-side-menus>
+
+		    <script id="checklist.html" type="text/ng-template">
+		      <ion-view title="Earthquakes Checklist">
+				<ion-header-bar class="bar bar-header bar-royal bar-helpquake"></ion-header-bar>
+		      <ion-nav-buttons side="left">
+		        <button class="button button-icon button-clear ion-arrow-left-c" onclick="go_to('maps')"></button>
+		      </ion-nav-buttons> 
+		        <ion-content> 
+		    		<div class="list"> 
+					  <div class="item item-divider" style="background-color: #ffc675">
+					    Things not to forget
+					  </div>
+					  <img src="img/checklist.jpeg" style="width:100%;border-bottom: 5px solid #f15735">
+					  <ion-list>
+  						<ion-checkbox ng-model="filter.red" ng-click="counter(500)">Flashlight <p>500g</p></ion-checkbox>
+  						<ion-checkbox ng-model="filter.yellow" ng-click="counter(250)">Extra batteries<p>250g</p></ion-checkbox>
+  						<ion-checkbox ng-model="filter.pink" ng-click="counter(50)">Local maps<p>50g</p></ion-checkbox>
+  						<ion-checkbox ng-model="filter.red2" ng-click="counter(50)">Whistle<p>50g</p></ion-checkbox>
+  						<ion-checkbox ng-model="filter.yellow2" ng-click="counter(700)">Manual can opener<p>700g</p></ion-checkbox>
+					  <a class="item" href="#" style="color: #330066"> 
+					    Weight
+					    <span class="badge badge-royal">{{counter_kg}}Kg</span>
+					  </a>
+					 </ion-list>
+					</div> 
+		        </ion-content>
+		      </ion-view>
+		    </script>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="offline_rec.html" type="text/ng-template">
+		      <ion-view title="Earthquakes">
+				<ion-header-bar class="bar bar-header bar-royal bar-helpquake"></ion-header-bar>
+		      <ion-nav-buttons side="left">
+		        <button class="button button-icon button-clear ion-arrow-left-c" onclick="go_to('maps')"></button>
+		      </ion-nav-buttons> 
+		        <ion-content> 
+		    		<div class="list">	
+					  <img src="img/checklist.jpeg" style="width:100%;border-bottom: 5px solid #f15735">
+					  <a class="item item-icon-right" ng-click="go_to_checklist()"> 
+					    Checklist
+					    <i class="icon ion-chevron-right" style="color: f15735"></i>
+					  </a>
+					 <a class="item item-icon-right" onclick="go_to('guides')"> 
+					    Emeregency Rules
+					    <i class="icon ion-chevron-right" style="color: f15735"></i>
+					  </a>		
+					  <a class="item item-icon-right" ng-click="go_to_checklist()"> 
+					    Meetup points
+					    <i class="icon ion-chevron-right" style="color: f15735"></i>
+					  </a>					  
+					</div><br><br><br><br>
+		        </ion-content> 
+		      </ion-view>
+		    </script>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="login.html" type="text/ng-template">
+		      <ion-view title="HelpQuake" hide-nav-bar="true">
+		        <ion-content class="signup-style" scroll="false"><br>
+		        	<img src="img/user.png" style="margin-left: 10px;width: 35px;margin-top: -10px;" ng-click="showMenu()">
+		        	<center><img src="img/icon.png" style="width:40%"><h3 style="color: white;margin-top: 0px">HELPQUAKE</h3><p style="color: darkgray">Keep calm and get help</p><center>
+		    		<div class="list" style="padding-left: 50px;padding-right: 50px;">
+					  <label class="item item-input item-floating-label" style="border-top: none;border-left: none;border-right: none">
+					    <span class="input-label">Username</span>
+					    <input type="text" placeholder="Username" style="color: white">
+					  </label>
+					  <label class="item item-input item-floating-label" style="border-top:none;border-left: none;border-right: none">
+					    <span class="input-label">Password</span>
+					    <input type="password" placeholder="Password" style="color: white">
+					  </label> 
+					</div>
+					<div class="row" style="width:80%">
+					  <div class="col">
+					  	<button class="button button-block button-royal" onclick="go_to('maps')" style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);background-color: #f15735;border-color: #f15735">
+						  Login
+					  	</button>
+					  </div>
+					</div>
+					<div class="row" style="width:80%">
+					  <div class="col">
+					  	<button class="button button-block button-positive" onclick="go_to('maps')" style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);">
+						  Facebook
+					  	</button>
+					  </div>
+					</div>
+					<div class="row" style="width:80%">
+					  <div class="col">
+					  	<p style="text-decoration: underline;color: white">Do you forget password?</p>
+					  </div>
+					</div>
+		        </ion-content>
+		      </ion-view>
+		    </script>
+        </ion-content>
+      </ion-view>
+    </script>
+ 	
+        <script id="maps.html" type="text/ng-template">
+		      <ion-view title="HelpQuake">
+		      	<ion-header-bar class="bar bar-header bar-royal"></ion-header-bar> 
+
+		        <ion-nav-buttons side="left">
+			        <button class="button button-clear" ng-click="showMenu()"><img src="img/user.png" style="width: 25px;"></button>
+			    </ion-nav-buttons>
+
+			    <ion-nav-buttons side="right">
+			        <button class="button button-icon button-clear ion-android-note" style="right:15px;color: #330066;background-color: #330066"        ng-click="prova2()"></button>
+					<button class="button button-icon button-clear ion-ios7-search-strong" style="padding-right:8px;color: #330066;background-color: #330066" ng-click="prova2()"></button>
+			    </ion-nav-buttons>
+
+		        <div class="tabs-striped tabs-top tabs-background-positive tabs-light tabs-color-light">
+		            <div class="tabs" style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);background-color:#f15735;border-color:#f15735">
+		                <a class="tab-item active">
+						    Maps	
+						  </a>
+						  <a href="#/news" class="tab-item">
+						    News
+						  </a> 
+		            </div>
+		        </div>
+		        <ion-content>
+		        	<div class="mapouter"><div class="gmap_canvas"><iframe width="100%" height="100%" id="gmap_canvas" src="https://maps.google.com/maps?q=John%20F.%20Kennedy%20Space%20Center&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe></div><style>.mapouter{text-align:right;height:100%;width:100%;}.gmap_canvas {overflow:hidden;background:none!important;height:100%;width:100%;}</style></div>
+		        </ion-content>
+		      </ion-view>
+		    </script>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="guides.html" type="text/ng-template">
+		      <ion-view title="HelpQuake">
+		      	<ion-header-bar class="bar bar-header bar-royal">
+        		</ion-header-bar>
+        		<ion-nav-buttons side="right">
+        			<button class="button button-icon button-clear ion-home" style="padding-right:8px" onclick="go_to('maps')"></button>
+		        </ion-nav-buttons>
+
+		        <ion-nav-buttons side="left">
+			        <button class="button button-clear" ng-click="showMenu()"><img src="img/user.png" style="width: 25px;"></button>
+			    </ion-nav-buttons>
+
+		        
+		        <ion-content> 
+		        	<div class="card">
+					  <div class="item item-text-wrap">
+					  	<center><b>Do's</b></center><br>
+					    Ensure you do the following if you are outdoors during an earthquake:<br><br>
+						Stay there.<br>
+						Move away from buildings, streetlights, and utility wires.<br>
+						Once in the open, stay there until the shaking stops. The greatest danger exists directly outside buildings, at exits and alongside exterior walls.
+					  </div>
+					</div>
+					<div class="card">
+					  <div class="item item-text-wrap">
+					  	<center><b>Don'ts</b></center><br>
+					    DO NOT turn on the gas again if you turned it off; let the gas company do it.<br><br>
+						DO NOT use matches, lighters, camp stoves or barbecues, electrical equipment, appliances UNTIL you are sure there are no gas leaks. They may create a spark that could ignite leaking gas and cause an explosion and fire.<br><br>
+						DO NOT use your telephone, EXCEPT for a medical or fire emergency. You could tie up the lines needed for emergency response. If the phone doesn't work send someone for help.<br><br>
+						DO NOT expect firefighters, police or paramedics to help you. They may not be available.<br>
+					  </div>
+					</div> 
+		        </ion-content>
+		      </ion-view>
+		    </script>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="doesnt.html" type="text/ng-template">
+		      <ion-view title="HelpQuake">
+		      	<ion-header-bar class="bar bar-header bar-royal">
+        		</ion-header-bar> 
+
+		        <ion-nav-buttons side="left">
+			        <button class="button button-clear" ng-click="showMenu()"><img src="img/user.png" style="width: 25px;"></button>
+			    </ion-nav-buttons>
+
+		        <div class="tabs-striped tabs-top tabs-background-positive tabs-light tabs-color-light">
+		            <div class="tabs" style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);background-color:#f15735;border-color:#f15735">
+		                <a href="#/guides" class="tab-item">
+						    Does
+						  </a>
+						  <a class="tab-item active">
+						    Doesn't
+						  </a> 
+		            </div>
+		        </div>
+		        <ion-content><br><br>
+		        	<div class="card">
+					  <div class="item item-text-wrap">
+					    DO NOT turn on the gas again if you turned it off; let the gas company do it<br>
+						DO NOT use matches, lighters, camp stoves or barbecues, electrical equipment, appliances UNTIL you are sure there are no gas leaks. They may create a spark that could ignite leaking gas and cause an explosion and fire<br>
+						DO NOT use your telephone, EXCEPT for a medical or fire emergency. You could tie up the lines needed for emergency response. If the phone doesn't work send someone for help<br>
+						DO NOT expect firefighters, police or paramedics to help you. They may not be available.
+					  </div>
+					</div> 
+		        </ion-content>
+		      </ion-view>
+		    </script>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="news.html" type="text/ng-template">
+		      <ion-view title="HelpQuake">
+		      	<ion-header-bar class="bar bar-header bar-royal">
+        		</ion-header-bar>
+
+		        <ion-nav-buttons side="left">
+			        <button class="button button-clear" ng-click="showMenu()"><img src="img/user.png" style="width: 25px;"></button>
+			    </ion-nav-buttons>
+
+		        <div class="tabs-striped tabs-top tabs-background-positive tabs-light tabs-color-light">
+		            <div class="tabs" style="box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);background-color:#f15735;border-color:#f15735">
+		                <a href="#/maps" class="tab-item">
+						    Maps	
+						  </a>
+						  <a class="tab-item active">
+						    News
+						  </a> 
+		            </div>
+		        </div>
+		        <ion-content><br><br>
+		        	 <div class="list card">
+
+					  <div class="item item-avatar">
+					    <img src="img/icon.png">
+					    <h2>Marty McFly</h2>
+					    <p>November 05, 1955</p>
+					  </div>
+
+					  <div class="item item-body">
+					    <img class="full-image" src="img/news.jpg">
+					    <p>
+					      Hurricane Florence: the damage caused between 17 and 22 billion dollars, among the 10 most serious in the history of the United States
+					    </p>
+					    <p>
+					      <a href="#" class="subdued">1 Like</a>
+					      <a href="#" class="subdued">5 Comments</a>
+					    </p>
+					  </div> 
+					</div>
+		        </ion-content>
+		      </ion-view>
+		    </script>
+        </ion-content>
+      </ion-view>
+    </script>
+
+  </body>
+</html>
+
+<script>
+angular.module('ionicApp', ['ionic'])
+
+.config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider
+    .state('home', {
+      url: '/home',
+      templateUrl: 'home.html'
+    })
+    .state('login', {
+      url: '/login',
+      templateUrl: 'login.html'
+    })
+    .state('maps', {
+      url: '/maps',
+      templateUrl: 'maps.html'
+    })
+    .state('checklist', {
+      url: '/checklist',
+      templateUrl: 'checklist.html'
+    })
+    .state('news', {
+      url: '/news',
+      templateUrl: 'news.html'
+    })
+    .state('offline_rec', {
+      url: '/offline_rec',
+      templateUrl: 'offline_rec.html'
+    })
+    .state('guides', {
+      url: '/guides',
+      templateUrl: 'guides.html'
+    })
+    .state('doesnt', {
+      url: '/doesnt',
+      templateUrl: 'doesnt.html'
+    });
+
+
+   $urlRouterProvider.otherwise("/login");
+
+})
+.controller('NavCtrl', function($scope, $ionicSideMenuDelegate,$ionicPlatform) {
+	$scope.counter_kg = 0;
+	$scope.counter = function(arg){
+		$scope.counter_kg = $scope.counter_kg + arg;
+	}
+  
+  $scope.prova2 = function(){
+  		function alertDismissed() {
+  		    window.location = '#/guides';
+  		}
+  		navigator.notification.alert(
+  		    'High sismic activity in your area',  // message
+  		    alertDismissed,         // callback
+  		    'Keep Calm',            // title
+  		    'Checklist'                  // buttonName
+  		);
+  }
+  
+  $scope.go_to_checklist = function(){
+  	window.location = '#/checklist';
+  }
+
+  $scope.showMenu = function () {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+});
+
+  
+
+  $scope.alert_text = function(){
+  	cordova.plugins.diagnostic.isLocationEnabled(function (enabled) {
+	if (enabled)
+	{
+	     window.location = '#/maps';
+	}
+	else
+	{
+	  var accuracyName = 'High Accuracy';
+	  cordova.plugins.locationAccuracy.request(onRequestSuccess.bind(this, accuracyName), onRequestFailure, cordova.plugins.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
+	  function onRequestSuccess(accuracyName, success) {
+	    window.location = '#/maps';
+	  }
+	  function onRequestFailure(error) {
+	    //alert("Accuracy request failed: error code="+error.code+"; error message="+error.message);
+	  }
+	}
+	}, function (error) {
+	  console.error("The following error occurred: " + error);
+	}); 
+  }
+  
+.controller('HomeTabCtrl', function($scope) {
+	
+});
+</script>
+
+<style type="text/css">
+
+.float-button {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  width: 30px;
+  padding: 30px;
+  font-size: 40px;
+  background: $warning;
+  position: fixed;
+  bottom: 20px; /* Adjust to where you want it */
+  right: 20px; /* Adjust to where you want it */
+  z-index: 9999;
+}
+
+.float-button .height_fix {
+  margin-top: 100%;
+}
+
+.float-button .content {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  margin-top: -20px; /* Note, this must be half the font size */
+  color: $light;
+}
+.my-back-button {
+content: url('img/icon.png');
+width: 35px;
+}
+ ion-content.signup-style {
+    background: url('img/sfondo-app.jpg') no-repeat;
+    background-size: cover;
+}
+</style>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "291578076628",
+    "firebase_url": "https://deneb-assistant-voice.firebaseio.com",
+    "project_id": "deneb-assistant-voice",
+    "storage_bucket": "deneb-assistant-voice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291578076628:android:46602b25066c5121",
+        "android_client_info": {
+          "package_name": "com.help_quake.it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291578076628-jhlt3rd2e43hrk0egpngmsohpum7h7da.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcoUEg8W8OlT00jd3g845i_-0WzooUw64"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
